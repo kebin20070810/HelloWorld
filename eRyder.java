@@ -1,21 +1,35 @@
 public class eRyder {
-    private String bikeID;
+    public static final String COMPANY_NAME = "ERyder";
+    public static final double BASE_FARE = 1.0;
+    public static final double PER_MINUTE_FARE = 0.5;
+
+    private final String linkedAccount;
+    private final String linkedPhoneNumber;
+
+    private String bikeId;
     private int batteryLevel;
     private boolean isAvailable;
     private double kmDriven;
+    private int totalUsageInMinutes;
+    private double totalFare;
 
-    public eRyder() {
-        this.bikeID = "";
-        this.batteryLevel = 0;
-        this.isAvailable = false;
-        this.kmDriven = 0.0;
-    }
-
-    public eRyder(String bikeID, int batteryLevel, boolean isAvailable, double kmDriven) {
-        this.bikeID = bikeID;
+    public eRyder(String bikeId, int batteryLevel, boolean isAvailable, double kmDriven,
+                  String linkedAccount, String linkedPhoneNumber) {
+        this.bikeId = bikeId;
         this.setBatteryLevel(batteryLevel);
         this.isAvailable = isAvailable;
         this.kmDriven = kmDriven;
+        this.linkedAccount = linkedAccount;
+        this.linkedPhoneNumber = linkedPhoneNumber;
+    }
+
+    public eRyder(String bikeId, int batteryLevel, boolean isAvailable, double kmDriven) {
+        this.bikeId = bikeId;
+        this.setBatteryLevel(batteryLevel);
+        this.isAvailable = isAvailable;
+        this.kmDriven = kmDriven;
+        this.linkedAccount = "guest_user";
+        this.linkedPhoneNumber = "00000000000";
     }
 
     public void ride() {
@@ -27,18 +41,32 @@ public class eRyder {
     }
 
     public void printBikeDetails() {
-        System.out.println("Bike ID: " + bikeID);
+        System.out.println("Bike ID: " + bikeId);
         System.out.println("Battery Level: " + batteryLevel + "%");
         System.out.println("Availability: " + isAvailable);
         System.out.println("Distance Travelled: " + kmDriven + " km");
     }
 
-    public String getBikeID() {
-        return bikeID;
+    public void printRideDetails(int usageInMinutes) {
+        this.totalFare = calculateFare(usageInMinutes);
+        this.totalUsageInMinutes = usageInMinutes;
+        System.out.println("Linked Account: " + linkedAccount);
+        System.out.println("Linked Phone Number: " + linkedPhoneNumber);
+        System.out.println("Bike ID: " + bikeId);
+        System.out.println("Usage in Minutes: " + totalUsageInMinutes + " mins");
+        System.out.println("Total Fare: " + totalFare + " EUR");
     }
 
-    public void setBikeID(String bikeID) {
-        this.bikeID = bikeID;
+    private double calculateFare(int usageInMinutes) {
+        return BASE_FARE + (PER_MINUTE_FARE * usageInMinutes);
+    }
+
+    public String getBikeId() {
+        return bikeId;
+    }
+
+    public void setBikeId(String bikeId) {
+        this.bikeId = bikeId;
     }
 
     public int getBatteryLevel() {
@@ -68,7 +96,14 @@ public class eRyder {
     public void setKmDriven(double kmDriven) {
         this.kmDriven = kmDriven;
     }
-    
+
+    public static void main(String[] args) {
+        eRyder bike1 = new eRyder("EB001", 80, true, 120.5);
+        bike1.printRideDetails(10);
+
+        eRyder bike2 = new eRyder("EB002", 95, true, 88.2, "user_002", "12345678901");
+        bike2.printRideDetails(15);
+    }
 }
 
 
